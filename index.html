@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карта риска суицида (Л.Б. Шнейдер)</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f0f2f5; 
+            margin: 0; 
+            padding: 20px; 
+            color: #333; 
+            line-height: 1.6;
+        }
+        .container { 
+            max-width: 900px; 
+            margin: auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+        }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 5px; }
+        .subtitle { text-align: center; font-size: 0.9em; color: #7f8c8d; margin-bottom: 30px; }
+        
+        .user-info { 
+            display: flex; 
+            gap: 15px; 
+            margin-bottom: 25px; 
+            justify-content: center; 
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .user-info input { 
+            padding: 12px; 
+            border: 1px solid #ddd; 
+            border-radius: 6px; 
+            width: 100%; 
+            max-width: 300px;
+            outline: none;
+        }
+        .user-info input:focus { border-color: #3498db; box-shadow: 0 0 5px rgba(52,152,219,0.3); }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #e1e4e8; padding: 12px; text-align: left; }
+        th { background-color: #f8f9fa; font-weight: 600; }
+        
+        .center { text-align: center; }
+        .section-title { 
+            background-color: #f1f3f5; 
+            font-weight: bold; 
+            color: #495057;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit { 
+            display: block; 
+            width: 250px; 
+            margin: 40px auto 0; 
+            padding: 15px; 
+            background-color: #2ecc71; 
+            color: white; 
+            border: none; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            font-size: 18px; 
+            font-weight: bold;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .btn-submit:hover { background-color: #27ae60; transform: translateY(-2px); }
+        .btn-submit:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+
+        #successMessage { 
+            display: none; 
+            text-align: center; 
+            padding: 60px 20px; 
+        }
+        #successMessage h3 { color: #27ae60; font-size: 24px; }
+        #successMessage p { color: #7f8c8d; font-size: 18px; }
+
+        /* Отключаем выделение текста для защиты */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div class="container">
+    <div id="mainContent">
+        <h2>Mодификация для подростков Л.Б. Шнейдер</h2>
+        <!-- <p class="subtitle">(модификация для подростков Л.Б. Шнейдер)</p> -->
+
+        <div class="user-info">
+            <input type="text" id="fio" placeholder="ФИО студента" required>
+            <input type="text" id="group" placeholder="Группа / Класс" required>
+        </div>
+
+        <form id="quizForm">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Фактор риска</th>
+                        <th class="center">Не выявлен</th>
+                        <th class="center">Слабо выражен</th>
+                        <th class="center">Сильно выражен</th>
+                    </tr>
+                </thead>
+                <tbody id="quizBody">
+                    <tr class="section-title"><td colspan="4">I. Биографические данные</td></tr>
+                    <tr><td>1. Ранее имела место попытка суицида</td>
+                        <td class="center"><input type="radio" name="q1" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q1" value="2"></td>
+                        <td class="center"><input type="radio" name="q1" value="3"></td></tr>
+                    <tr><td>2. Суицидальные попытки у родственников</td>
+                        <td class="center"><input type="radio" name="q2" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q2" value="1"></td>
+                        <td class="center"><input type="radio" name="q2" value="2"></td></tr>
+                    <tr><td>3. Развод или смерть одного из родителей</td>
+                        <td class="center"><input type="radio" name="q3" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q3" value="1"></td>
+                        <td class="center"><input type="radio" name="q3" value="2"></td></tr>
+                    <tr><td>4. Недостаток тепла в семье</td>
+                        <td class="center"><input type="radio" name="q4" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q4" value="1"></td>
+                        <td class="center"><input type="radio" name="q4" value="2"></td></tr>
+                    <tr><td>5. Полная или частичная безнадзорность</td>
+                        <td class="center"><input type="radio" name="q5" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q5" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q5" value="1"></td></tr>
+
+                    <tr class="section-title"><td colspan="4">II. Актуальная конфликтная ситуация</td></tr>
+                    <tr><td>1. Конфликт с взрослым (педагогом, родителем)</td>
+                        <td class="center"><input type="radio" name="q6" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q6" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q6" value="1"></td></tr>
+                    <tr><td>2. Конфликт со сверстниками, отвержение группой</td>
+                        <td class="center"><input type="radio" name="q7" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q7" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q7" value="1"></td></tr>
+                    <tr><td>3. Продолжительный конфликт с близкими людьми</td>
+                        <td class="center"><input type="radio" name="q8" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q8" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q8" value="1"></td></tr>
+                    <tr><td>4. Внутриличностный конфликт, напряженность</td>
+                        <td class="center"><input type="radio" name="q9" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q9" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q9" value="1"></td></tr>
+                    <tr><td>5. Высказывания с угрозой суицида</td>
+                        <td class="center"><input type="radio" name="q10" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q10" value="2"></td>
+                        <td class="center"><input type="radio" name="q10" value="3"></td></tr>
+                    <tr><td>6. Подобные конфликты имели место ранее</td>
+                        <td class="center"><input type="radio" name="q11" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q11" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q11" value="1"></td></tr>
+                    <tr><td>7. Конфликт отягощен (учеба, здоровье, любовь)</td>
+                        <td class="center"><input type="radio" name="q12" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q12" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q12" value="1"></td></tr>
+                    <tr><td>8. Непредсказуемый исход, ожидание последствий</td>
+                        <td class="center"><input type="radio" name="q13" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q13" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q13" value="1"></td></tr>
+                    <tr><td>9. Чувство обиды, жалости к себе</td>
+                        <td class="center"><input type="radio" name="q14" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q14" value="1"></td>
+                        <td class="center"><input type="radio" name="q14" value="2"></td></tr>
+                    <tr><td>10. Чувство усталости, бессилия, апатия</td>
+                        <td class="center"><input type="radio" name="q15" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q15" value="1"></td>
+                        <td class="center"><input type="radio" name="q15" value="2"></td></tr>
+                    <tr><td>11. Чувство безысходности</td>
+                        <td class="center"><input type="radio" name="q16" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q16" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q16" value="2"></td></tr>
+
+                    <tr class="section-title"><td colspan="4">III. Характеристика личности</td></tr>
+                    <tr><td>1. Самостоятельность в принятии решений</td>
+                        <td class="center"><input type="radio" name="q17" value="-1" required></td>
+                        <td class="center"><input type="radio" name="q17" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q17" value="1"></td></tr>
+                    <tr><td>2. Решительность</td>
+                        <td class="center"><input type="radio" name="q18" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q18" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q18" value="1"></td></tr>
+                    <tr><td>3. Настойчивость</td>
+                        <td class="center"><input type="radio" name="q19" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q19" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q19" value="1"></td></tr>
+                    <tr><td>4. Сильное желание достичь своей цели</td>
+                        <td class="center"><input type="radio" name="q20" value="-1" required></td>
+                        <td class="center"><input type="radio" name="q20" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q20" value="1"></td></tr>
+                    <tr><td>5. Болезненное самолюбие, ранимость</td>
+                        <td class="center"><input type="radio" name="q21" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q21" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q21" value="2"></td></tr>
+                    <tr><td>6. Доверчивость</td>
+                        <td class="center"><input type="radio" name="q22" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q22" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q22" value="1"></td></tr>
+                    <tr><td>7. Эмоциональная вязкость («застревание»)</td>
+                        <td class="center"><input type="radio" name="q23" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q23" value="1"></td>
+                        <td class="center"><input type="radio" name="q23" value="2"></td></tr>
+                    <tr><td>8. Эмоциональная неустойчивость</td>
+                        <td class="center"><input type="radio" name="q24" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q24" value="2"></td>
+                        <td class="center"><input type="radio" name="q24" value="3"></td></tr>
+                    <tr><td>9. Импульсивность</td>
+                        <td class="center"><input type="radio" name="q25" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q25" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q25" value="2"></td></tr>
+                    <tr><td>10. Потребность в близких контактах</td>
+                        <td class="center"><input type="radio" name="q26" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q26" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q26" value="2"></td></tr>
+                    <tr><td>11. Низкая способность к защитным механизмам</td>
+                        <td class="center"><input type="radio" name="q27" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q27" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q27" value="1.5"></td></tr>
+                    <tr><td>12. Бескомпромиссность</td>
+                        <td class="center"><input type="radio" name="q28" value="-0.5" required></td>
+                        <td class="center"><input type="radio" name="q28" value="0.5"></td>
+                        <td class="center"><input type="radio" name="q28" value="1.5"></td></tr>
+                </tbody>
+            </table>
+            <button type="submit" class="btn-submit" id="submitBtn">Отправить результаты</button>
+        </form>
+    </div>
+
+    <div id="successMessage">
+        <h3>Спасибо за ваши ответы!</h3>
+        <p>Ваши данные были успешно переданы преподавателю.</p>
+        <p style="font-size: 0.8em;">Повторное прохождение теста с этого устройства ограничено.</p>
+    </div>
+</div>
+
+<script>
+    // КОНФИГУРАЦИЯ
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxFtUeiME63aDHNj0boOArH8TlfEgj14Wc4R0HDtcKdjv03jE_UXw2QELt8DSCUI1rK/exec'; // <--- ВСТАВЬТЕ СЮДА ВАШУ ССЫЛКУ
+
+    // Элементы
+    const form = document.getElementById('quizForm');
+    const mainContent = document.getElementById('mainContent');
+    const successMessage = document.getElementById('successMessage');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // 1. ЗАЩИТА: Блокировка клавиш
+    document.onkeydown = function(e) {
+        // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+        if(e.keyCode == 123 || 
+          (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || 
+          (e.ctrlKey && e.keyCode == 85)) {
+            return false;
+        }
+    };
+
+    // 2. ПРОВЕРКА ПРИ ЗАГРУЗКЕ
+    window.onload = function() {
+        if (localStorage.getItem('shneider_test_done') === 'true') {
+            showSuccess();
+        }
+    };
+
+    function showSuccess() {
+        mainContent.style.display = 'none';
+        successMessage.style.display = 'block';
+    }
+
+    // 3. ОТПРАВКА ДАННЫХ
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        
+        const fio = document.getElementById('fio').value.trim();
+        const group = document.getElementById('group').value.trim();
+
+        if (!fio || !group) {
+            alert("Пожалуйста, заполните ФИО и Группу");
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Отправка...";
+
+        let totalScore = 0;
+        const formData = new FormData(form);
+        
+        for (let value of formData.values()) {
+            totalScore += parseFloat(value);
+        }
+
+        // Интерпретация
+        let riskLevel = "";
+        if (totalScore < 9) riskLevel = "Незначительный";
+        else if (totalScore <= 15.5) riskLevel = "Присутствует";
+        else riskLevel = "Значительный";
+
+        const payload = {
+            fio: fio,
+            group: group,
+            score: totalScore.toFixed(2),
+            level: riskLevel,
+            timestamp: new Date().toLocaleString('ru-RU')
+        };
+
+        // AJAX запрос в Google Sheets
+        fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            cache: 'no-cache',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            localStorage.setItem('shneider_test_done', 'true');
+            showSuccess();
+        })
+        .catch(error => {
+            console.error('Error!', error.message);
+            alert('Произошла ошибка при отправке данных. Проверьте соединение.');
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Отправить результаты";
+        });
+    });
+</script>
+
+</body>
+</html>
