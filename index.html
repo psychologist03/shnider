@@ -310,7 +310,7 @@
         let total = 0;
         new FormData(form).forEach(v => total += parseFloat(v));
         
-        let level = total < 9 ? "Незначительный" : (total <= 15.5 ? "Присутствует" : "Значительный");
+        let level = total < 9 ? "Риск суицида Незначительный" : (total <= 15.5 ? "Риск суицида Присутствует" : "Риск суицида Значительный");
 
         const data = {
             fio: fio,
